@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@/*": [ "src/*" ]
-    },
-    "jsx": "react-jsx",
+    "target": "esnext",
+    "module": "es2020",
     "strict": true,
-    "moduleResolution": "node"
+    "jsx": "react-jsx", // Ensure this line is here
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
   },
-  "include": [ "src" ],
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
