@@ -1,4 +1,15 @@
 {
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "es2020",
+    "strict": true,
+    "jsx": "react-jsx", // Ensure this line is here
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

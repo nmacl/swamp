@@ -1,21 +1,26 @@
-import Navbar from './components/Navbar';
-import Discussion from './components/Discussion';
-import './App.css'; // Assuming you are still using Tailwind
+import React, { useState } from 'react';
+import './App.css';
+import SignUp from './components/SignUp';
 
 function App() {
-  return (
-    <>
-      <div className="min-h-screen bg-gunmetal mx-64">
-        {/* Navbar Component */}
-        <Navbar />
+    const [showSignUp, setShowSignUp] = useState(false);
 
-        {/* Main Discussion Section */}
-        <div className="p-4">
-          <Discussion />
-        </div>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <button
+                className="signup-button"
+                onClick={() => setShowSignUp(!showSignUp)}
+            >
+                Sign Up
+            </button>
+
+            {showSignUp && (
+                <div className="container">
+                    <SignUp />
+                </div>
+            )}
+        </>
+    );
 }
 
 export default App;
