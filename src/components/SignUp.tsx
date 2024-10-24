@@ -54,6 +54,7 @@ const SignUp: React.FC = () => {
                         onBlur={formik.handleBlur}
                         value={formik.values.email}
                         style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
+                        className="text-black"
                     />
                     {formik.touched.email && formik.errors.email && (
                         <div style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>{formik.errors.email}</div>
@@ -70,6 +71,8 @@ const SignUp: React.FC = () => {
                         onBlur={formik.handleBlur}
                         value={formik.values.password}
                         style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
+                        className="text-black"
+
                     />
                     {formik.touched.password && formik.errors.password && (
                         <div style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>{formik.errors.password}</div>

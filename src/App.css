@@ -1,85 +1,47 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 #root {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
-}
-
-.logo {
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f7f7f7; /* add a background color */
+    width: 100%; /* set the width to 100% of the parent */
+    max-width: 1280px; /* set a maximum width */
+    margin: 0 auto; /* center the container */
+    padding: 2rem; /* add some padding */
+  }
+  
+  .logo {
     height: 6em;
     padding: 1.5em;
     will-change: filter;
     transition: filter 300ms;
-}
-
-    .logo:hover {
-        filter: drop-shadow(0 0 2em #646cffaa);
-    }
-
-    .logo.react:hover {
-        filter: drop-shadow(0 0 2em #61dafbaa);
-    }
-
-@keyframes logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    a:nth-of-type(2) .logo {
-        animation: logo-spin infinite 20s linear;
-    }
-}
-
-.card {
-    padding: 2em;
-}
-
-.read-the-docs {
-    color: #888;
-}
-
-/* Position Sign Up button at top-right */
-.signup-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 0.5rem 1rem;
-    background-color: #f3f4f6;
-    color: #000;
-    font-weight: bold;
-    border: 1px solid #ccc;
-    border-radius: 0.25rem;
-    cursor: pointer;
-}
-
-    .signup-button:hover {
-        background-color: #e5e7eb;
-    }
-
-/* Center container for Sign Up form */
-.container {
+  }
+  
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+  
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+  
+  /* add a class for the buttons container */
+  .buttons {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    height: 100vh;
-}
-
-/* Style for Sign Up form */
-.signup-form {
-    width: 300px;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
-    text-align: center;
-}
+  }
+  
+  /* add a class for the Swamp text */
+  .swamp {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: auto;
+  }
