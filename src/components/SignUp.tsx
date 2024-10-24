@@ -1,6 +1,4 @@
-// src/components/SignUp.tsx
-
-import React from "react";
+import React, { useState } from "react";
 import { useFormik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { auth } from "../firebase";
@@ -19,6 +17,8 @@ const validationSchema = Yup.object({
 });
 
 const SignUp: React.FC = () => {
+    const [additionalMessage, setAdditionalMessage] = useState<string>("");
+
     const formik = useFormik<FormValues>({
         initialValues: {
             email: "",
@@ -38,10 +38,9 @@ const SignUp: React.FC = () => {
             }
         },
     });
-
+    
     return (
         <div style={{ maxWidth: "300px", margin: "auto", textAlign: "center" }}>
-            <h2>Sign Up</h2>
             <form onSubmit={formik.handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div>
                     <label htmlFor="email" style={{ display: "block", marginBottom: "8px" }}>Email</label>
@@ -72,7 +71,6 @@ const SignUp: React.FC = () => {
                         value={formik.values.password}
                         style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
                         className="text-black"
-
                     />
                     {formik.touched.password && formik.errors.password && (
                         <div style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>{formik.errors.password}</div>

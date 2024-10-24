@@ -1,19 +1,19 @@
-const Navbar = () => {
-  return (
-    <nav className="bg-gunmetal p-4 flex items-center justify-between">
-      {/* Left Section: Swamp */}
-      <div className="ml-8">
-        <h1 className="text-white text-2xl font-bold">Swamp</h1>
-      </div>
+import SignUp from './SignUp';
+import { useState } from 'react';
 
-      {/* Right Section: + and Manage */}
-      <div className="flex items-center space-x-4 mr-8">
-        <button className="text-2xl p-2 bg-raspberryRose rounded-full text-white">
-          +
-        </button>
-        <button className="bg-amaranthPurple text-white px-4 py-2 rounded">
-          Manage
-        </button>
+const Navbar = () => {
+
+  return (
+    <nav className="bg-gunmetal p-4">
+      <div className="flex items-center justify-between max-w-screen-lg mx-auto px-64">
+        <div className="flex items-center space-x-4 ml-auto">
+          <button className="text-xl p-1 bg-raspberryRose rounded-lg px-3 text-white">
+            +
+          </button>
+          <button className="bg-amaranthPurple font-semibold text-white px-4 py-2 rounded-lg">
+            Manage
+          </button>
+        </div>
       </div>
     </nav>
   );
