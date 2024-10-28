@@ -12,7 +12,8 @@
     padding: 2rem;
     background-color: #f7f7f7; /* add a background color */
     width: 100%; /* set the width to 100% of the parent */
-    max-width: 1280px; /* set a maximum width */
+    max-width: 1200px; /* set a maximum width */
+
     margin: 0 auto; /* center the container */
     padding: 2rem; /* add some padding */
   }
