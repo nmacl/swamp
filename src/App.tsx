@@ -29,7 +29,10 @@ function App() {
     return (
         <>
             <div className="flex justify-center">
-                <img src={banner} alt="Swamp Banner" className="max-w-md mb-4" />
+                <h1>
+                    <img src={banner} alt="Swamp Banner" className="max-w-md mb-4 shadow-2xl rounded-xl" />
+                </h1>
+                
             </div>
 
             {showAuthForm && (

@@ -55,7 +55,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
     };
 
     return (
-        <div className="max-w-xs mx-auto p-2 bg-white rounded-lg shadow-lg">
+        <div className="max-w-xs mx-auto p-2 bg-white rounded-lg">
             <h2 className="text-2xl font-bold text-center mb-4">
                 {isSignUpMode ? "Sign Up" : "Login"}
             </h2>
