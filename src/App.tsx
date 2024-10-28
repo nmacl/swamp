@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
+import Navbar from './components/Navbar';
+import Discussion from './components/Discussion';
+import AuthForm from './components/AuthForm';
+import banner from './banner.webp';
+import { auth } from './firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1 className="text-xl">Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const handleAuthFormToggle = () => {
+        setShowAuthForm(prevState => !prevState);
+    };
+
+    const handleAuthSuccess = () => {
+        setShowAuthForm(false); // Close the form on successful login/signup
+    };
+
+    React.useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    return (
+        <>
+            <div className="flex justify-center">
+                <img src={banner} alt="Swamp Banner" className="max-w-md mb-4" />
+            </div>
+
+            {showAuthForm && (
+                <div className="bg-white shadow-lg rounded-lg p-8 m-4 relative">
+                    <button
+                        className="absolute top-2 left-2 flexbutton text-white p-2 bg-indigo-500 rounded"
+                        onClick={handleAuthFormToggle}
+                    >
+                        Close
+                    </button>
+                    <AuthForm onSuccess={handleAuthSuccess} />
+                </div>
+            )}
+
+            <Navbar onSignUp={handleAuthFormToggle} user={user} />
+            <Discussion />
+        </>
+    );
 }
 
-export default App
+export default App;
