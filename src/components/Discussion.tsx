@@ -73,7 +73,7 @@ const DiscussionForm: React.FC<{ onAddDiscussion: (discussion: Discussion) => vo
         className="text-black w-full p-2 mb-2 border rounded"
       />
       <button type="submit" className="w-full p-2 text-white bg-indigo-500 rounded">
-        Add Discussion
+        Add Discussion!
       </button>
     </form>
   );
