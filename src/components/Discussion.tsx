@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { ref, push, onValue } from 'firebase/database';
 
 // Define the shape of the discussion object
 interface Discussion {
-  id: number;
+  id?: string;
   title: string;
   lastMessages: string[];
   iconUrl: string;
@@ -36,33 +38,75 @@ const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion }) => {
   );
 };
 
+// Form component to add new discussions
+const DiscussionForm: React.FC<{ onAddDiscussion: (discussion: Discussion) => void }> = ({ onAddDiscussion }) => {
+  const [title, setTitle] = useState('');
+  const [iconUrl, setIconUrl] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newDiscussion: Discussion = {
+      title,
+      lastMessages: ['Welcome to the discussion!'],
+      iconUrl: iconUrl || 'https://via.placeholder.com/150',
+    };
+    onAddDiscussion(newDiscussion);
+    setTitle('');
+    setIconUrl('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="p-4 mb-4 bg-white rounded-lg shadow-md">
+      <input
+        type="text"
+        placeholder="Discussion Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="text-black w-full p-2 mb-2 border rounded"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Icon URL"
+        value={iconUrl}
+        onChange={(e) => setIconUrl(e.target.value)}
+        className="text-black w-full p-2 mb-2 border rounded"
+      />
+      <button type="submit" className="w-full p-2 text-white bg-indigo-500 rounded">
+        Add Discussion!
+      </button>
+    </form>
+  );
+};
+
 // Main Component: DiscussionList
 const DiscussionList: React.FC = () => {
-  // Sample Data
-  const discussions: Discussion[] = [
-    {
-      id: 1,
-      title: 'General Chat',
-      lastMessages: ['Hello everyone!', 'What’s up?'],
-      iconUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      id: 2,
-      title: 'Project Ideas',
-      lastMessages: ['Anyone got cool ideas?', 'Check this out...'],
-      iconUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      id: 3,
-      title: 'Tech Talk',
-      lastMessages: ['Let’s discuss the latest in tech.', 'AI is fascinating!'],
-      iconUrl: 'https://via.placeholder.com/150',
-    },
-    // Add more discussions as needed
-  ];
+  const [discussions, setDiscussions] = useState<Discussion[]>([]);
+
+  // Function to add a new discussion to the database
+  const addDiscussion = (discussion: Discussion) => {
+    const discussionsRef = ref(db, 'discussions');
+    push(discussionsRef, discussion);
+  };
+
+  // Fetch discussions from the database on component load
+  useEffect(() => {
+    const discussionsRef = ref(db, 'discussions');
+    onValue(discussionsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const loadedDiscussions = Object.entries(data).map(([id, discussion]) => ({
+          id,
+          ...discussion as Discussion,
+        }));
+        setDiscussions(loadedDiscussions);
+      }
+    });
+  }, []);
 
   return (
     <div className="p-4 space-y-4">
+      <DiscussionForm onAddDiscussion={addDiscussion} />
       {discussions.map((discussion) => (
         <DiscussionCard key={discussion.id} discussion={discussion} />
       ))}
