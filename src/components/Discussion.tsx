@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
 import { ref, push, onValue, set } from 'firebase/database';
 import { User } from 'firebase/auth';
+import { useNavigate } from "react-router-dom";
 
 interface Comment {
   id: string;
@@ -34,7 +35,6 @@ interface DiscussionCardProps {
 }
 
 const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion, onDiscussionClick }) => {
-  // Add default values for potentially undefined properties
   const {
     id,
     title,
@@ -42,20 +42,24 @@ const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion, onDiscussio
     authorName,
     timestamp,
     iconUrl,
-    tags = [], // Default to empty array if undefined
-    comments = [], // Default to empty array if undefined
+    tags = [],
+    comments = [],
     likes = 0,
-    views = 0
+    views = 0,
   } = discussion;
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate(`/discussion/${id}`)
+  }
 
   return (
-    <div 
+    <div
       className="flex flex-col p-4 bg-white rounded-lg shadow-md transition-transform hover:scale-105 cursor-pointer"
-      onClick={() => onDiscussionClick(id)}
+      onClick={handleClick} // Attach click handler to the card container
     >
       <div className="flex items-center mb-3">
         <img
-          src={iconUrl || 'https://via.placeholder.com/150'} // Provide fallback image
+          src={iconUrl || 'https://via.placeholder.com/150'}
           alt={title}
           className="w-12 h-12 rounded mr-4"
         />
@@ -84,6 +88,7 @@ const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion, onDiscussio
     </div>
   );
 };
+
 
 const DiscussionForm: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -148,6 +153,7 @@ const DiscussionForm: React.FC = () => {
         onChange={(e) => setTitle(e.target.value)}
         className="text-black w-full p-2 mb-2 border rounded"
         required
+  
       />
       <textarea
         placeholder="Discussion Content"

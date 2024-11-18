@@ -7,6 +7,9 @@ import banner from './banner.webp';
 import { auth, db } from './firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { ref, get, set, DatabaseReference } from 'firebase/database';
+import { useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import DiscussionTemplate from './components/DiscussionTemplate';
 
 function App() {
     const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
@@ -60,30 +63,43 @@ function App() {
     }, []);
 
     return (
-        <>
-            <button className="text-3xl" onClick={push}>Push</button>
-            <button className="text-3xl" onClick={pull}>Pull</button>
-            <div className="flex justify-center">
-                <h1>
-                    <img src={banner} alt="Swamp Banner" className="max-w-md mb-4 shadow-2xl rounded-xl" />
-                </h1>
-            </div>
-
-            {showAuthForm && (
-                <div className="bg-white shadow-lg rounded-lg p-8 m-4 relative">
-                    <button
-                        className="absolute top-2 left-2 flexbutton text-white p-2 bg-indigo-500 rounded"
-                        onClick={handleAuthFormToggle}
-                    >
-                        Close
-                    </button>
-                    <AuthForm onSuccess={handleAuthSuccess} />
+            <Routes>
+                <Route path="/" element={
+                    <div>
+                    <button className="text-3xl" onClick={push}>Push</button>
+                    <button className="text-3xl" onClick={pull}>Pull</button>
+                    <div className="flex justify-center">
+                        <h1>
+                            <img src={banner} alt="Swamp Banner" className="max-w-md mb-4 shadow-2xl rounded-xl" />
+                        </h1>
+                    </div>
+        
+                    {showAuthForm && (
+                        <div className="bg-white shadow-lg rounded-lg p-8 m-4 relative">
+                            <button
+                                className="absolute top-2 left-2 flexbutton text-white p-2 bg-indigo-500 rounded"
+                                onClick={handleAuthFormToggle}
+                            >
+                                Close
+                            </button>
+                            <AuthForm onSuccess={handleAuthSuccess} />
+                        </div>
+                    )}
+        
+                    <Navbar onSignUp={handleAuthFormToggle} user={user} />
+                    <Discussion />
+                    </div>
+                }/>
+                <Route path="/DiscussionTemplate" element={
+                    <DiscussionTemplate/>
+                }/>
+                <Route path="/" element={
+                <div>
+                    <Discussion />
                 </div>
-            )}
-
-            <Navbar onSignUp={handleAuthFormToggle} user={user} />
-            <Discussion />
-        </>
+                } />
+                <Route path="/discussion/:id" element={<DiscussionTemplate />} />
+            </Routes>
     );
 }
 
