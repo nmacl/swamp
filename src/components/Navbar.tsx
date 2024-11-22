@@ -4,6 +4,7 @@ import { faPlus, faUser, faCogs, faSignOutAlt } from '@fortawesome/free-solid-sv
 import { User } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 interface NavbarProps {
     onSignUp: () => void;
@@ -11,6 +12,12 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onSignUp, user }) => {
+    const navigate = useNavigate();
+
+    const handleSettingsClick = () => {
+        navigate(`/SettingsPage`);
+    };
+
     const handleLogout = async () => {
         try {
             await signOut(auth);
@@ -30,11 +37,15 @@ const Navbar: React.FC<NavbarProps> = ({ onSignUp, user }) => {
                     </button>
 
                     {/* Manage/Admin Button */}
-                    <button className="text-white hover:text-gray-300" aria-label="Admin Dashboard">
+                    <button
+                        className="text-white hover:text-gray-300"
+                        aria-label="Admin Dashboard"
+                        onClick={handleSettingsClick} // ✅ Pass the function correctly
+                    >
                         <FontAwesomeIcon icon={faCogs} size="lg" />
                     </button>
                 </div>
-                
+
                 {/* Right-aligned Profile, Greeting, and Logout */}
                 <div className="flex items-center space-x-2 absolute top-0 right-0 mt-4 mr-4">
                     {user && (

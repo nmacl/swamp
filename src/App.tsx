@@ -10,6 +10,8 @@ import { ref, get, set, DatabaseReference } from 'firebase/database';
 import { useNavigate } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DiscussionTemplate from './components/DiscussionTemplate';
+import SettingsPage from './components/SettingsPage'; 
+
 
 function App() {
     const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
@@ -99,6 +101,9 @@ function App() {
                 </div>
                 } />
                 <Route path="/discussion/:id" element={<DiscussionTemplate />} />
+                <Route path="/SettingsPage" element={
+                    <SettingsPage/>}
+                />
             </Routes>
     );
 }
