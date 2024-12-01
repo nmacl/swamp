@@ -49,7 +49,8 @@ const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion, onDiscussio
   } = discussion;
   const navigate = useNavigate()
   const handleClick = () => {
-    navigate(`/discussion/${id}`)
+    console.log(`Navigating to /discussion/${id} with title: ${title}`);
+    navigate(`/discussion/${id}`, {state: {title}})
   }
 
   return (
@@ -106,7 +107,7 @@ const DiscussionForm: React.FC = () => {
       return;
     }
 
-    const newDiscussion: Omit<Discussion, 'id'> = {
+    const newDiscussion = {
       title,
       content,
       authorId: user.uid,
@@ -124,6 +125,8 @@ const DiscussionForm: React.FC = () => {
       const discussionsRef = ref(db, 'discussions');
       const newRef = push(discussionsRef);
       await set(newRef, newDiscussion);
+
+      console.log('Discussion created with ID:', newRef.key);
 
       // Reset form
       setTitle('');

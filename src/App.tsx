@@ -92,9 +92,7 @@ function App() {
                     <Discussion />
                     </div>
                 }/>
-                <Route path="/DiscussionTemplate" element={
-                    <DiscussionTemplate/>
-                }/>
+                
                 <Route path="/" element={
                 <div>
                     <Discussion />

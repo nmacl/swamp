@@ -11,6 +11,7 @@ function DiscussionTemplate() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const location = useLocation();
+  const { id } = useParams();
   const { title } = location.state || {}; 
 
   useEffect(() => {
@@ -38,7 +39,7 @@ function DiscussionTemplate() {
   const handleSendMessage = () => {
     if (newMessage.trim() === '') return;
 
-    const messagesRef = ref(db, 'messages');
+    const messagesRef = ref(db, 'messages/${id}');
     push(messagesRef, {
       text: newMessage,
       user: user?.displayName || user?.email || 'Anonymous',
@@ -51,7 +52,7 @@ function DiscussionTemplate() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1>Discussion Room</h1>
+        <h1> {title || 'Discussion Room'}</h1>
       </div>
       <div style={styles.chatContainer}>
         <div style={styles.messages}>
