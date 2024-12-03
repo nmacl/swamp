@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DiscussionTemplate from './components/DiscussionTemplate';
 import SettingsPage from './components/SettingsPage'; 
+import DiscussionMessages from './components/DiscussionMessages';
 
 
 function App() {

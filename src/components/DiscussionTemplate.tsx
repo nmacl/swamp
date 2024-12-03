@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
-import { ref, push, onValue } from 'firebase/database';
+import { ref, push, onValue, set, remove } from 'firebase/database';
 import { useNavigate, useParams } from 'react-router-dom';
 import { User } from 'firebase/auth';
 import { useLocation } from 'react-router-dom';
 
+interface Message {
+  text: string;
+  user: string;
+  timestamp: number;
+}
+
 function DiscussionTemplate() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
@@ -14,7 +20,8 @@ function DiscussionTemplate() {
   const { id } = useParams();
   const { title } = location.state || {}; 
 
-  useEffect(() => {
+  
+  useState(() => {
     // Listen for auth state changes
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (!currentUser) {
@@ -22,24 +29,39 @@ function DiscussionTemplate() {
       } else {
         setUser(currentUser);
       }
+      return () => unsubscribe();
     });
+    
     
 
     // Fetch messages from Firebase
     const messagesRef = ref(db, 'messages');
     onValue(messagesRef, (snapshot) => {
       const data = snapshot.val();
-      const messagesList = data ? Object.values(data) : [];
+      const messagesList: Message[] = data ? Object.values(data) : [];
       setMessages(messagesList);
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
+  useState(() => {
+    // Clear messages when a new discussion is selected
+    setMessages([]);
+        // Fetch messages for the current discussion from Firebase
+        const messagesRef = ref(db, `discussions/${id}/messages/`);
+        const unsubscribe = onValue(messagesRef, (snapshot) => {
+          const data = snapshot.val();
+          const messagesList: Message[] = data ? Object.values(data) : [];
+          setMessages(messagesList);
+        });
+        return () => unsubscribe()
+      }, [id]);
+
   const handleSendMessage = () => {
     if (newMessage.trim() === '') return;
 
-    const messagesRef = ref(db, 'messages/${id}');
+    const messagesRef = ref(db, `discussions/${id}/messages`);
     push(messagesRef, {
       text: newMessage,
       user: user?.displayName || user?.email || 'Anonymous',
@@ -48,6 +70,20 @@ function DiscussionTemplate() {
 
     setNewMessage(''); // Clear input
   };
+  /*const handleDeleteMessages = async () => {
+    const messagesRef = ref(db, `discussions/${id}/messages`);
+    try {
+      // Remove all messages for the current discussion
+      await remove(messagesRef);
+      setMessages([]);
+      // Optionally, clear the local state as well
+      setMessages([]);
+      console.log('Messages deleted successfully');
+    } catch (error) {
+      console.error('Error deleting messages:', error);
+    }
+  }; */
+
 
   return (
     <div style={styles.container}>

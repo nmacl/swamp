@@ -70,7 +70,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.email}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm text-black"
+                        className="text-white w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm text-black"
                     />
                     {formik.touched.email && formik.errors.email && (
                         <div className="text-red-500 text-sm mt-1">{formik.errors.email}</div>
@@ -86,7 +86,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.password}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm text-black"
+                        className="text-white w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm text-black"
                     />
                     {formik.touched.password && formik.errors.password && (
                         <div className="text-red-500 text-sm mt-1">{formik.errors.password}</div>

@@ -3,6 +3,7 @@ import { db, auth } from '../firebase';
 import { ref, push, onValue, set } from 'firebase/database';
 import { User } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
+import DiscussionMessages from './DiscussionMessages';
 
 interface Comment {
   id: string;
@@ -47,6 +48,19 @@ const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion, onDiscussio
     likes = 0,
     views = 0,
   } = discussion;
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete the discussion "${title}"?`);
+    if (confirmDelete) {
+      try {
+        const discussionRef = ref(db, `discussions/${id}`);
+        await set(discussionRef, null); // Deleting the discussion
+        console.log(`Discussion "${title}" deleted successfully.`);
+      } catch (error) {
+        console.error("Error deleting discussion:", error);
+        alert("Failed to delete discussion. Please try again.");
+      }
+    }
+  };
   const navigate = useNavigate()
   const handleClick = () => {
     console.log(`Navigating to /discussion/${id} with title: ${title}`);
@@ -54,6 +68,7 @@ const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion, onDiscussio
   }
 
   return (
+    
     <div
       className="flex flex-col p-4 bg-white rounded-lg shadow-md transition-transform hover:scale-105 cursor-pointer"
       onClick={handleClick} // Attach click handler to the card container
@@ -78,6 +93,15 @@ const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion, onDiscussio
           <span>{likes} likes</span>
           <span>{views} views</span>
         </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent triggering card click
+            handleDelete();
+          }}
+          className="text-gray-600 bg-gray-100 px-3 py-1 rounded hover:bg-red-100"
+        >
+          Delete
+        </button>
         <div className="flex space-x-2">
           {tags.map((tag, index) => (
             <span key={index} className="bg-gray-100 px-2 py-1 rounded-full">
@@ -154,7 +178,7 @@ const DiscussionForm: React.FC = () => {
         placeholder="Discussion Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="text-black w-full p-2 mb-2 border rounded"
+        className="text-white w-full p-2 mb-2 border rounded"
         required
   
       />
@@ -162,7 +186,7 @@ const DiscussionForm: React.FC = () => {
         placeholder="Discussion Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="text-black w-full p-2 mb-2 border rounded h-32"
+        className="text-white w-full p-2 mb-2 border rounded h-32"
         required
       />
       <input
@@ -170,7 +194,7 @@ const DiscussionForm: React.FC = () => {
         placeholder="Icon URL (optional)"
         value={iconUrl}
         onChange={(e) => setIconUrl(e.target.value)}
-        className="text-black w-full p-2 mb-2 border rounded"
+        className="text-white w-full p-2 mb-2 border rounded"
       />
       <div className="flex mb-2">
         <input
@@ -178,7 +202,7 @@ const DiscussionForm: React.FC = () => {
           placeholder="Add tags"
           value={tagInput}
           onChange={(e) => setTagInput(e.target.value)}
-          className="text-black flex-grow p-2 border rounded-l"
+          className="text-white flex-grow p-2 border rounded-l"
         />
         <button
           type="button"

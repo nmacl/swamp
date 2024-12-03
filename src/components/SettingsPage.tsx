@@ -28,18 +28,7 @@ const SettingsPage: React.FC = () => {
         }
     };
 
-    const handleUpdateEmail = async () => {
-        setError('');
-        setSuccess('');
-        try {
-            if (auth.currentUser) {
-                await updateEmail(auth.currentUser, email);
-                setSuccess('Email updated successfully!');
-            }
-        } catch (err) {
-            setError('Failed to update email. Please try again.');
-        }
-    };
+ 
 
     const handleChangePassword = async () => {
         setError('');
@@ -72,19 +61,7 @@ const SettingsPage: React.FC = () => {
                 />
                 <button style={styles.button} onClick={handleUpdateProfile}>
                     Update Profile
-                </button>
-
-                <h2 style={styles.sectionTitle}>Update Email</h2>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={styles.input}
-                />
-                <button style={styles.button} onClick={handleUpdateEmail}>
-                    Update Email
-                </button>
+                </button>   
 
                 <h2 style={styles.sectionTitle}>Change Password</h2>
                 <input
